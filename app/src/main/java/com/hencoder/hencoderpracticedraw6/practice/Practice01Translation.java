@@ -4,8 +4,9 @@ import android.content.Context;
 import android.graphics.Outline;
 import android.graphics.Path;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.hencoder.hencoderpracticedraw6.R;
+import com.hencoder.hencoderpracticedraw6.Utils;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static com.hencoder.hencoderpracticedraw6.Utils.dpToPixel;
@@ -21,6 +23,8 @@ import static com.hencoder.hencoderpracticedraw6.Utils.dpToPixel;
 public class Practice01Translation extends RelativeLayout {
     Button animateBt;
     ImageView imageView;
+    private int translateState = 0;
+    private static final Integer translateStateCap = 5;
 
     public Practice01Translation(Context context) {
         super(context);
@@ -48,7 +52,33 @@ public class Practice01Translation extends RelativeLayout {
         animateBt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
-                // TODO 在这里处理点击事件，通过 View.animate().translationX/Y/Z() 来让 View 平移
+                switch (translateState) {
+                    case 0:
+                        imageView.animate().translationX(Utils.dpToPixel(100));
+                        break;
+                    case 1:
+                        // Go back to the fromValue
+                        imageView.animate().translationX(0);
+                        break;
+                    case 2:
+                        imageView.animate().translationY(Utils.dpToPixel(50));
+                        break;
+                    case 3:
+                        imageView.animate().translationY(0);
+                        break;
+                    case 4:
+                        // Z is shadow
+                        imageView.animate().translationZ(Utils.dpToPixel(15));
+                        break;
+                    case 5:
+                        imageView.animate().translationZ(0);
+                        break;
+                }
+
+                translateState++;
+                if (translateState == translateStateCap) {
+                    translateState = 0;
+                }
             }
         });
     }

@@ -1,7 +1,7 @@
 package com.hencoder.hencoderpracticedraw6.practice;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +13,8 @@ import com.hencoder.hencoderpracticedraw6.R;
 public class Practice03Scale extends RelativeLayout {
     Button animateBt;
     ImageView imageView;
+    private int translateState = 0;
+    private static final Integer translateStateCap = 4;
 
     public Practice03Scale(Context context) {
         super(context);
@@ -33,10 +35,28 @@ public class Practice03Scale extends RelativeLayout {
         animateBt = (Button) findViewById(R.id.animateBt);
         imageView = (ImageView) findViewById(R.id.imageView);
 
-        animateBt.setOnClickListener(new View.OnClickListener() {
+        animateBt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
-                // TODO 在这里处理点击事件，通过 View.animate().scaleX/Y() 来让 View 放缩
+                switch (translateState) {
+                    case 0:
+                        imageView.animate().scaleX(1.5f);
+                        break;
+                    case 1:
+                        imageView.animate().scaleX(1);
+                        break;
+                    case 2:
+                        imageView.animate().scaleY(0.5f);
+                        break;
+                    case 3:
+                        imageView.animate().scaleY(1);
+                        break;
+                }
+
+                translateState++;
+                if (translateState == translateStateCap) {
+                    translateState = 0;
+                }
             }
         });
     }
